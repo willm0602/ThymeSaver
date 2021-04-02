@@ -1,8 +1,9 @@
 import datetime
 
 class Food:
-    def __init__(self, inKey, inName, inExpired, inExpDate, inQuantity, inType):
+    def __init__(self, inKey, inOwner, inName, inExpired, inExpDate, inQuantity, inType):
         self.surrogateKey = inKey
+        self.owner = inOwner
         self.name = inName
         self.expired = inExpired
         self.expDate = inExpDate
@@ -15,6 +16,12 @@ class Food:
 
     def getSurrogate(self):
         return self.surrogateKey
+
+    def setOwner(self,inOwner):
+        self.owner = inOwner
+
+    def getOwner(self):
+        return self.owner
 
     def setName(self, inName):
         self.name = inName
@@ -45,7 +52,7 @@ class Food:
 
 
 # Create an object of type Food (with initialization values)
-myFood = Food(1, "Katie", True, datetime.datetime(2021, 3, 29), 10, "produce")
+myFood = Food(1, "PIZZA", "Katie", True, datetime.datetime(2021, 3, 29), 10, "produce")
 
 
 print(myFood.surrogateKey)
