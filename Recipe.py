@@ -43,7 +43,9 @@ class Recipe:
     def addIngredients(self, original):
         self.ingredients.extend(original)
         # Works as intended, adds items in passed list to Ingredients list
-
+        
     def addSteps(self, original):
         self.steps.extend(original)
         # Works as intended, adds items in passed list to Ingredients list
+
+        
