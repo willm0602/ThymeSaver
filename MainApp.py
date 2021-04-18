@@ -3,6 +3,13 @@ from User import User
 
 from kivymd.uix.card import MDCardSwipe
 
+from kivymd.uix.picker import MDDatePicker
+from kivymd.uix.picker import MDThemePicker
+
+from kivymd.uix.dialog import MDDialog
+
+from kivymd.uix.button import MDRectangleFlatButton
+
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import StringProperty, ListProperty
@@ -22,9 +29,52 @@ from kivymd.uix.list import IRightBodyTouch
 from kivymd.uix.selectioncontrol import MDCheckbox
 
 from kivy.core.window import Window
+
+# from kivymd.uix.screen import Screen
+from kivymd.uix.textfield import MDTextField 
+
 Window.size = (400, 650)
 
+
 KV = '''
+
+<Check@MDCheckbox>:
+    group: 'group'
+    size_hint: None, None
+    size: dp(48), dp(48) #48
+
+
+<dialog_content>
+    orientation:"vertical"
+    spaceing: "12dp"
+    size_hint_y: None
+    height: "120dp"
+    
+    MDLabel:
+        text: "Does this item expire?"
+        valign: "top"
+    
+    BoxLayout:
+        BoxLayout:
+            MDLabel:
+                text: "Yes"
+                halign:"center"
+            Check:
+                active: True
+                halign:"left"
+
+        BoxLayout:
+            MDLabel:
+                text: "No"
+                halign:"center"
+            Check:
+                halign:"left"
+
+    MDRaisedButton:
+        text: "Select an expiration date"
+        pos_hint: {'center_x': .5, 'center_y': .5}
+        on_release: app.show_date_picker()
+
 
 # Menu item in the DrawerList list.
 <ItemDrawer>:
@@ -92,7 +142,7 @@ KV = '''
         MDIconButton:
             icon: "database-plus"
             pos_hint: {"center_y": 0.5}
-            on_release: app.remove_item(root)
+            on_release: app.add_pantry_item(root)
             
 
     MDCardSwipeFrontBox:
@@ -103,7 +153,6 @@ KV = '''
             _no_ripple_effect: True
 
         RightCheckBox:
-
 MDScreen: #main screen
     MDBoxLayout:
         orientation: "vertical"
@@ -150,6 +199,7 @@ MDScreen: #main screen
 user = User("PeterParker","spidyman@gmail.com","password")
 
 
+
 class SwipeItem(MDCardSwipe):
     '''' Card with behavior '''
     text = StringProperty()
@@ -180,8 +230,11 @@ class DrawerList(ThemableBehavior, MDList):
                 break
         instance_item.text_color = self.theme_cls.primary_color
 
+class dialog_content(BoxLayout):
+    pass
 
-class TestNavigationDrawer(MDApp):
+
+class App(MDApp):
     instance = "database"
     
     data = {
@@ -191,8 +244,19 @@ class TestNavigationDrawer(MDApp):
         'plus':'Add item to list',
     }
 
+    def got_date(self, the_date):
+        print(the_date)
+
+    def show_date_picker(self):
+        date_dialog = MDDatePicker(callback=self.got_date)
+        date_dialog.open()
+
     def callback(self,instance): #when you press on one of the items in the circle button it prints the name of the icon being used
         print(instance.icon)
+
+    def show_theme_picker(self):
+        theme_dialog = MDThemePicker(callback = self.got_date)
+        theme_dialog.open()
 
 
     def __init__(self, **kwargs):
@@ -202,16 +266,45 @@ class TestNavigationDrawer(MDApp):
     def build(self):
         return self.screen
 
+    def add_pantry_item(self,instance):
+        hold = instance.text #this gets the title of the item clicked
+        close_button = MDRectangleFlatButton(text = 'Close', on_release=self.close_dialog)
+        submit_button = MDRectangleFlatButton(text = 'Submit', on_release =self.close_dialog)
+        self.dialog = MDDialog(
+            title = "Add item to Pantry?",
+            size_hint=(0.8,1),
+            type="custom",
+            content_cls = dialog_content(),
+            buttons=[submit_button,close_button]
+        )
+        self.dialog.open()
+        # open thingy that prompts for more info and then creates a food object which is then sent to the food handler
+
+    def close_dialog(self,instance):
+        
+        #This probably won't be useful here but might be useful for what Katie is doing
+        #takes the user list and adds and item "new thing" to it and then adds it to the list on the screen
+        user.localList.append("A new item")
+        self.screen.ids.md_list.add_widget(
+            SwipeItem(text = user.localList[-1], icon = "pasta")
+        )
+        #end comments
+        App.remove_item(self, instance) #this just doesn't work right now, need to remove item after pushing to Pantry
+        self.dialog.dismiss()
+
     def remove_item(self,instance):
         self.screen.ids.md_list.remove_widget(instance)
 
 
     def on_start(self):
+        
         icons_item = {
             "food-apple": "Food",
             "pasta": "Recipes",
             "database": "Pantry",
-            "logout": "Log out"
+            "brush": "Theme", #completely unesccesary but would be cool to customize colors of the app
+            #see MDThemePicker https://kivymd.readthedocs.io/en/latest/components/pickers/index.html
+            "logout": "Log out",
         }
 
         itemsList = [
@@ -235,8 +328,11 @@ class TestNavigationDrawer(MDApp):
             "Apples",
             "Sour patch kids"
         ]
-
+        
         for i in itemsList:
+            user.localList.append(i)
+
+        for i in user.localList: #prints all the items in user local list
             self.screen.ids.md_list.add_widget(
                 SwipeItem(text = i, icon = "pasta")
             )
@@ -246,5 +342,4 @@ class TestNavigationDrawer(MDApp):
                 ItemDrawer(icon=icon_name, text=icons_item[icon_name])
             )
 
-
-TestNavigationDrawer().run()
+App().run() #changed the name here, make a note in your git push
