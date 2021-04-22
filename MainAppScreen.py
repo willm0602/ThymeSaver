@@ -1,4 +1,15 @@
 KV = '''
+<OtherScreen>:
+    name: 'other'
+    MDLabel:
+        text: "other screen!"
+
+<MainScreen>:
+    name: 'main'
+    MDLabel:
+        text: "main screen!"
+
+
 
 <Check@MDCheckbox>:
     group: 'group'
@@ -15,24 +26,6 @@ KV = '''
     MDLabel:
         text: "Does this item expire?"
         valign: "top"
-    
-    # BoxLayout:
-
-    #     BoxLayout:
-    #         MDLabel:
-    #             text: "Yes"
-    #             halign:"center"
-    #         Check:
-    #             active: True
-    #             halign:"left"
-
-    #     BoxLayout:
-    #         MDLabel:
-    #             text: "No"
-    #             halign:"center"
-    #         Check:
-    #             halign:"left"
-    
 
     MDRaisedButton:
         text: "Select an expiration date"
@@ -47,6 +40,7 @@ KV = '''
 <ItemDrawer>:
     theme_text_color: "Custom"
     on_release: self.parent.set_color_item(self)
+    on_press: self.parent.test(self)
 
     IconLeftWidget:
         id: icon
@@ -120,7 +114,9 @@ KV = '''
             _no_ripple_effect: True
 
         RightCheckBox:
-MDScreen: #main screen
+
+MDScreen: #main screen MDS
+
     MDBoxLayout:
         orientation: "vertical"
         spacing: "10dp"
