@@ -36,7 +36,7 @@ KV = '''
         theme_text_color: "Custom"
         text_color: root.text_color
 
-
+    
 <ContentNavigationDrawer>:
     orientation: "vertical"
     padding: "8dp"
@@ -103,6 +103,9 @@ user = User("PeterParker","spidyman@gmail.com","password")
 class ContentNavigationDrawer(BoxLayout):
     pass
 
+
+class Registration(BoxLayout):
+    pass
 
 class ItemDrawer(OneLineIconListItem):
     icon = StringProperty()
