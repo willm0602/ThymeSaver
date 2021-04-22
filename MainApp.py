@@ -21,59 +21,7 @@ from kivymd.uix.list import IconLeftWidget
 from kivymd.uix.list import IRightBodyTouch
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivy.core.window import Window
-Window.size = (400, 650)
-
-KV = '''
-
-# Menu item in the DrawerList list.
-<ItemDrawer>:
-    theme_text_color: "Custom"
-    on_release: self.parent.set_color_item(self)
-
-    IconLeftWidget:
-        id: icon
-        icon: root.icon
-        theme_text_color: "Custom"
-        text_color: root.text_color
-
-    
-<ContentNavigationDrawer>:
-    orientation: "vertical"
-    padding: "8dp"
-    spacing: "8dp"
-
-    AnchorLayout:
-        anchor_x: "left"
-        size_hint_y: None
-        height: avatar.height
-
-        Image:
-            id: avatar
-            size_hint: None, None
-            size: "56dp", "56dp"
-            source: "CaptainWheezeopp.png"
-
-    MDLabel:
-        text: "A$AP Sidebar"
-        font_style: "Button"
-        size_hint_y: None
-        height: self.texture_size[1]
-
-    MDLabel:
-        text: "SadWill@gmail.com"
-        font_style: "Caption"
-        size_hint_y: None
-        height: self.texture_size[1]
-
-    ScrollView:
-
-        DrawerList:
-            id: md_list
-Screen:
-    MDList:
-        id:container
-
-    NavigationLayout:
+from kivymd.uix.textfield import MDTextField 
 
 #This probably won't be useful here but might be useful for what Katie is doing
     #takes the user list and adds and item "new thing" to it and then adds it to the list on the screen
@@ -105,10 +53,6 @@ class ContentNavigationDrawer(BoxLayout):
 class RightCheckBox(IRightBodyTouch,MDCheckbox):
     '''' right container '''
 
-class Registration(BoxLayout):
-    pass
-
-class ItemDrawer(OneLineIconListItem):
 class ItemDrawer(OneLineIconListItem): # icons and names in the nav list
     icon = StringProperty()
     text_color = ListProperty((0, 0, 0, 1)) #colors gets set back to black after click?

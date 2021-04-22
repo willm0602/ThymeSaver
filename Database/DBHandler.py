@@ -3,12 +3,12 @@ import requests
 import json
 
 URL = "http://130.157.38.162:5000/executeSqlQuery"
-PASSWORD = "stanJT370"
+PASSWORD = open('dbpassword.gitignore').read()
 
 class DBHandler:
     def __init__(self, url=URL, pswd = PASSWORD):
         self.url = url
-        self.password = "stanJT370"
+        self.password = pswd
 
     def exec(self,query):
         try:
@@ -19,4 +19,4 @@ class DBHandler:
         except:
             return("Error: SQL Query failed to execute, let Will know if you think this is a problem")
 
-DB = DBHandler()           
+DB = DBHandler(URL,PASSWORD)
