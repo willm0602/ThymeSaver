@@ -17,6 +17,6 @@ class DBHandler:
             jsonifiedData = json.loads(info)
             return(jsonifiedData["entries"])
         except:
-            return("Error: SQL Query failed to execute, let Will know if you think this is a problem")
-
+            print("Error: SQL Query failed to execute, let Will know if you think this is a problem")
+        
 DB = DBHandler(URL,PASSWORD)
