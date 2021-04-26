@@ -76,7 +76,6 @@ class Window2(Screen): #Main List Window -- CHANGE NAME LATER
     quantity = ObjectProperty()
     alreadyCheck = False
     alreadyCheckNav = False
-
     localList = [
             "", #empty item because the positioning puts it under the nav bar
             "pizza",
@@ -111,7 +110,6 @@ class Window2(Screen): #Main List Window -- CHANGE NAME LATER
             "c":"",
             "d":"",
         }
-
 
         if self.alreadyCheckNav == False:
             for icon_name in icons_item.keys():
@@ -197,13 +195,66 @@ class Window2(Screen): #Main List Window -- CHANGE NAME LATER
             quant = self.dialog.content_cls.ids.quantity.text
         else:
             quant = 1
-
-
-
+            
         self.JSON_maker(self.food_name,date,quant) #send collected info to be made into JSON type beat
         #after submitting, remove the item and close the box
         self.remove_item(self.pantry_item_instance) #removes the item from the list when button is pressed
         self.dialog.dismiss()
+
+    def call_back(self, instance):
+        self.show_data(self)
+
+
+
+    def show_data(self, obj):
+        close_button = MDRectangleFlatButton(
+            text = "Add",
+            pos_hint = {"center_x": 0.5, "center_y": 0.4},
+            on_press = self.close_dialog,
+            on_release = self.print_something
+        )
+        self.alreadyCheck = False
+
+
+        self.foodItem = MDTextField(
+            hint_text = "Enter an item",
+            helper_text = "e.g. apples, bananas, orange, etc.",
+            helper_text_mode = "on_focus",
+            # icon_right_color = app.theme_cls.primary_color,
+            pos_hint = {"center_x": 0.5, "center_y": 0.5},
+            size_hint_x = None,
+            width = 500
+        )
+
+
+        self.dialog = MDDialog(
+            title = "Enter an item:",
+            size_hint = (0.7, 1),
+            buttons = [close_button]
+        )
+
+        self.dialog.add_widget(self.foodItem)
+
+        self.dialog.open()
+
+
+
+    def close_dialog(self, obj):
+        self.dialog.dismiss()
+
+    def print_something(self, obj):
+        self.localList.append(self.foodItem.text)
+        self.ids.container.add_widget(
+            SwipeItem(text = self.foodItem.text)
+        )
+        # if self.alreadyCheck == False:
+        #     # for i in self.localList: #prints all the items in user local list
+        #     #     self.ids.container.add_widget(
+        #     #         SwipeItem(text = i)
+        #     #     )
+        #     #     print(i)
+        # self.alreadyCheck = True;
+
 
 
 #DIALOG BOX

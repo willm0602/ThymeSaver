@@ -10,13 +10,17 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.textfield import MDTextField, MDTextFieldRound
 from DBHandler import DB
 from User import User
+
+
+def register_user():
+    print("REGISTERING")
     
-REGISTRATION = '''
+LOGIN = '''
 
 BoxLayout:
     orientation: "vertical"
     MDLabel:
-        text: "Register"
+        text: "Login"
         halign: "center"
         theme_text_color: "Custom"
         text_color: 0, 0.5, 0, 1
@@ -44,19 +48,7 @@ BoxLayout:
         hint_text_color: "black"
         theme_text_color: "Custom"
         text_color: 0, 0.5, 0, 1 
-        password: True
-    
-    #email   
-    MDTextField: 
-        hint_text: "Email"
-        id: email
-        halign: "center"
-        valign: "middle"
-        color_mode: "primary"
-        mode: "rectangle"
-        hint_text_color: "black"
-        theme_text_color: "Custom"
-        text_color: 0, 0.5, 0, 1 
+        password: True 
     
     #submit
     MDFillRoundFlatButton:
@@ -67,18 +59,20 @@ BoxLayout:
         halign: "center"
         pos: self.parent.pos
         on_release:
-            app.register(user.text,password.text, email.text)
+            print(app.login(user.text,password.text))
         
 '''
 
 
-class RegisterApp(MDApp):
-    def register(self, username, password, email):
-        user = User(username,email,password)
-        query = f"INSERT INTO User VALUES('{username}', '{email}', PASSWORD('{password}'));"
-        DB.exec(query)
+class LoginApp(MDApp):
+    def login(self, username, password):
+        query = f"SELECT COUNT(*) FROM User WHERE username = '{username}' AND password = PASSWORD('{password}')"
+        count = DB.exec(query)
+        if count[0][0]:
+            return True
+        return(False)
         
     def build(self):
-        return builder.Builder.load_string(REGISTRATION)
+        return builder.Builder.load_string(LOGIN)
           
-RegisterApp().run()
+LoginApp().run()

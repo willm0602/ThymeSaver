@@ -107,6 +107,7 @@ ScreenManager:
     
     MDFloatingActionButtonSpeedDial: #floating list button
         id:float_button
+        callback: self.parent.call_back
         data: app.sm.get_screen("window2").data
         root_button_anim: True
         #rotation_root_button : True #this breaks the whole thing
@@ -130,13 +131,6 @@ ScreenManager:
 
             ContentNavigationDrawer:
                 id: content_drawer
-
-    #MDFloatingActionButtonSpeedDial: #floating list button
-     #   id:float_button
-      #  data: app.sm.get_screen("window2").data
-       # root_button_anim: True
-        #rotation_root_button : True #this breaks the whole thing
-        #hint_animation: True
 
 
 <ItemDrawer>:
