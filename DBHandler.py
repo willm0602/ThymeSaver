@@ -1,22 +1,33 @@
-import os
-import requests
-import json
+import mariadb
 
-URL = "http://130.157.38.162:5000/executeSqlQuery"
-PASSWORD = open('dbpassword.gitignore').read()
+PASSWORD = 'stanJT370'
+HOST = 'database-1.cuyobspht0m2.us-east-2.rds.amazonaws.com'
+USERNAME = 'cookcook'
 
 class DBHandler:
-    def __init__(self, url=URL, pswd = PASSWORD):
-        self.url = url
-        self.password = pswd
-
-    def exec(self,query):
-        try:
-            URL = self.url + "/" + query + "/" + self.password
-            info = requests.get(URL).content
-            jsonifiedData = json.loads(info)
-            return(jsonifiedData["entries"])
-        except:
-            print("Error: SQL Query failed to execute, let Will know if you think this is a problem")
+    def __init__(self,username = USERNAME, pswd = PASSWORD, host = HOST):
+        host = HOST
+        user = username
+        paswd = pswd
+        self.conn = mariadb.connect(
+            user = user,
+            password = paswd,
+            port = 3306,
+            host = host
+        )
+    def exec(self, query):
+        cursor = self.conn.cursor()
+        cursor.execute("Use Thymesaver;")
+        cursor.execute(query)
+        val = None
+        if not 'insert' in query.lower():
+            print(cursor.rowcount)
+            val = list(cursor)   
+        cursor.close()
+        self.conn.commit()
+        return(val)
+    
         
-DB = DBHandler(URL,PASSWORD)
+handler = DBHandler()
+names = handler.exec("INSERT INTO User VALUES('testUser', 'test@test.com', PASSWORD('TEST!'))")
+print(names)
