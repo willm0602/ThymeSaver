@@ -76,7 +76,6 @@ class Window2(Screen): #Main List Window -- CHANGE NAME LATER
     quantity = ObjectProperty()
     alreadyCheck = False
     alreadyCheckNav = False
-
     localList = [
             "", #empty item because the positioning puts it under the nav bar
             "pizza",
@@ -196,14 +195,11 @@ class Window2(Screen): #Main List Window -- CHANGE NAME LATER
             quant = self.dialog.content_cls.ids.quantity.text
         else:
             quant = 1
-
-
-
+            
         self.JSON_maker(self.food_name,date,quant) #send collected info to be made into JSON type beat
         #after submitting, remove the item and close the box
         self.remove_item(self.pantry_item_instance) #removes the item from the list when button is pressed
         self.dialog.dismiss()
-
 
     def call_back(self, instance):
         self.show_data(self)
