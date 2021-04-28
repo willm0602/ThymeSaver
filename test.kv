@@ -38,31 +38,109 @@ ScreenManager:
 
 <Registration>:
     name:"registration"
-
-    MDLabel:
-        id: no_more_stink
-        pos_hint: {'center_x':0.85, 'center_y':0.6}
-        text: "Registration Screen"
-
-    MDRectangleFlatButton:
-        text: "please, let me leave..."
-        pos_hint: {'center_x':0.5, 'center_y':0.5}
-        on_press: root.manager.current = 'window1'
-        on_press: root.manager.transition.duration = 0.25
-
+    MDBoxLayout:
+        orientation: "vertical"
+        MDLabel:
+            text: "Register"
+            halign: "center"
+            theme_text_color: "Custom"
+            text_color: 0, 0.5, 0, 1
+            
+        #username
+        MDTextField:
+            hint_text: "Username"
+            id: user
+            halign: "center"
+            valign: "middle"
+            color_mode: "primary"
+            mode: "rectangle"
+            hint_text_color: "black"
+            theme_text_color: "Custom"
+            text_color: 0, 0.5, 0, 1  
+            
+        #password
+        MDTextField: 
+            hint_text: "Password"
+            id: password
+            halign: "center"
+            valign: "middle"
+            color_mode: "primary"
+            mode: "rectangle"
+            hint_text_color: "black"
+            theme_text_color: "Custom"
+            text_color: 0, 0.5, 0, 1 
+            password: True
+        
+        #email   
+        MDTextField: 
+            hint_text: "Email"
+            id: email
+            halign: "center"
+            valign: "middle"
+            color_mode: "primary"
+            mode: "rectangle"
+            hint_text_color: "black"
+            theme_text_color: "Custom"
+            text_color: 0, 0.5, 0, 1 
+        
+        #submit
+        MDFillRoundFlatButton:
+            id: "submit"
+            text: "Register"
+            font_size: "30"
+            color: (0, 0.5, 0)
+            halign: "center"
+            pos: self.parent.pos
+            on_release:
+                app.sm.get_screen("registration").register(user.text,password.text, email.text)
+                root.manager.current = 'window2'
 <Login>:
     name:"login"
-
-    MDLabel:
-        id: no_more_stink
-        pos_hint: {'center_x':0.85, 'center_y':0.6}
-        text: "Login Screen"
-
-    MDRectangleFlatButton:
-        text: "please, let me leave..."
-        pos_hint: {'center_x':0.5, 'center_y':0.5}
-        on_press: root.manager.current = 'window1'
-        on_press: root.manager.transition.duration = 0.25
+    MDBoxLayout:
+        orientation: "vertical"
+        MDLabel:
+            text: "Login"
+            halign: "center"
+            theme_text_color: "Custom"
+            text_color: 0, 0.5, 0, 1
+            
+        #username
+        MDTextField:
+            hint_text: "Username"
+            id: user
+            halign: "center"
+            valign: "middle"
+            color_mode: "primary"
+            mode: "rectangle"
+            hint_text_color: "black"
+            theme_text_color: "Custom"
+            text_color: 0, 0.5, 0, 1  
+            
+        #password
+        MDTextField: 
+            hint_text: "Password"
+            id: password
+            halign: "center"
+            valign: "middle"
+            color_mode: "primary"
+            mode: "rectangle"
+            hint_text_color: "black"
+            theme_text_color: "Custom"
+            text_color: 0, 0.5, 0, 1 
+            password: True 
+    
+        #submit
+        MDFillRoundFlatButton:
+            id: "submit"
+            text: "Register"
+            font_size: "30"
+            color: (0, 0.5, 0)
+            halign: "center"
+            pos: self.parent.pos
+            on_release:
+                app.sm.get_screen("login").login(user.text,password.text)
+                root.manager.current = 'window2'
+        
 
 <Window1>:
     name: "window1"

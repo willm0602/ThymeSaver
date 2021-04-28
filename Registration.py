@@ -68,7 +68,7 @@ BoxLayout:
         pos: self.parent.pos
         on_release:
             app.register(user.text,password.text, email.text)
-        
+            
 '''
 
 

@@ -21,13 +21,8 @@ class DBHandler:
         cursor.execute(query)
         val = None
         if not 'insert' in query.lower():
-            print(cursor.rowcount)
             val = list(cursor)   
         cursor.close()
         self.conn.commit()
         return(val)
     
-        
-handler = DBHandler()
-names = handler.exec("INSERT INTO User VALUES('testUser', 'test@test.com', PASSWORD('TEST!'))")
-print(names)

@@ -29,6 +29,7 @@ from kivy.uix.screenmanager import Screen,ScreenManager
 from kivy.core.window import Window
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import StringProperty, ListProperty, ObjectProperty
+from DBHandler import DBHandler
 
 #Window size restrictions
 Window.size = (400, 650)
@@ -39,10 +40,55 @@ Window.size = (400, 650)
 
 #SCREEN DEFINITIONS
 class Registration(Screen):
-    pass
+    def register(self, username, password, email):
+        query = f"INSERT INTO User VALUES('{username}', '{email}', PASSWORD('{password}'));"
+        DB = DBHandler()
+        if self.valid(username,DB):
+            DB.exec(query)
+            
+    def valid(self, username, db):
+        users = db.exec(f"SELECT * FROM User WHERE username = '{username}'")
+        if len(users) > 0:
+            self.errorDialog()
+            return(False)
+        return(True)
+    
+    def errorDialog(self):
+        self.dialog = MDDialog(
+            text = "ERROR: Username already registered"
+        )
+        self.dialog.open()
 
 class Login(Screen):
-    pass
+    def login(self, username, password):
+        db = DBHandler()
+        
+        if self.valid(username, password):
+            email = self.getEmail(username, db)
+            user = User(username, email, password)
+            App.user = user
+        else:
+            self.errorDialog()
+            
+    def errorDialog(self):
+        self.dialog = MDDialog(
+            text = "ERROR: Invalid login information"
+        )
+        self.dialog.open()
+
+
+    def getEmail(self, username, db:DBHandler):
+        query = f"SELECT email FROM User where username = '{username}'"
+        email = db.exec(query)[0]
+        return(email)
+        
+    def valid(self, username, password):
+        query = f"SELECT COUNT(*) FROM User WHERE username = '{username}' AND password = PASSWORD('{password}')"
+        DB = DBHandler()
+        count = DB.exec(query)
+        if count[0][0]:
+            return True
+        return(False)
 
 class Recipes(Screen):
     pass
@@ -223,7 +269,7 @@ class Window2(Screen): #Main List Window -- CHANGE NAME LATER
             # icon_right_color = app.theme_cls.primary_color,
             pos_hint = {"center_x": 0.5, "center_y": 0.5},
             size_hint_x = None,
-            width = 500
+            width = 250
         )
 
 
