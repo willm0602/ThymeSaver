@@ -256,6 +256,14 @@ class Window2(Screen): #Main List Window -- CHANGE NAME LATER
     def deletion(self):
         for delete in CheckedItemsList:
             self.localList.remove(delete)
+            self.alreadyCheck = False;
+            self.ids.container.clear_widgets()
+            if self.alreadyCheck == False:
+                for i in self.localList: #prints all the items in user local list
+                    self.ids.container.add_widget(
+                        SwipeItem(text = i)
+                    )
+            self.alreadyCheck = True
         CheckedItemsList.clear()
         print(*self.localList, sep='\n')
 
