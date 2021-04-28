@@ -255,8 +255,8 @@ class Window2(Screen): #Main List Window -- CHANGE NAME LATER
 
     def deletion(self):
         for delete in CheckedItemsList:
-            self.localList.remove(delete)
             self.alreadyCheck = False;
+            self.localList.remove(delete)
             self.ids.container.clear_widgets()
             if self.alreadyCheck == False:
                 for i in self.localList: #prints all the items in user local list
@@ -301,6 +301,7 @@ class Window2(Screen): #Main List Window -- CHANGE NAME LATER
         self.dialog.add_widget(self.foodItem)
 
         self.dialog.open()
+        self.alreadyCheck = True
 
 
     def add_to_list(self, obj):
