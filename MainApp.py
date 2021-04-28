@@ -12,7 +12,7 @@ from kivymd.uix.card import MDCardSwipe
 from kivymd.uix.picker import MDDatePicker
 from kivymd.uix.picker import MDThemePicker
 from kivymd.uix.dialog import MDDialog
-from kivymd.uix.button import MDRectangleFlatButton
+from kivymd.uix.button import MDRectangleFlatButton, MDFlatButton
 from kivy.lang import Builder
 from kivymd.app import MDApp
 from kivymd.theming import ThemableBehavior
@@ -257,10 +257,15 @@ class Window2(Screen): #Main List Window -- CHANGE NAME LATER
             text = "Add",
             pos_hint = {"center_x": 0.5, "center_y": 0.4},
             on_press = self.close_dialog,
-            on_release = self.print_something
+            on_release = self.add_to_list
         )
         self.alreadyCheck = False
 
+        x_button = MDFlatButton(
+            text = "X",
+            pos_hint = {"center_x": 1.0, "center_y": 3.5},
+            on_press = self.close_dialog
+        )
 
         self.foodItem = MDTextField(
             hint_text = "Enter an item",
@@ -276,7 +281,7 @@ class Window2(Screen): #Main List Window -- CHANGE NAME LATER
         self.dialog = MDDialog(
             title = "Enter an item:",
             size_hint = (0.7, 1),
-            buttons = [close_button]
+            buttons = [close_button, x_button]
         )
 
         self.dialog.add_widget(self.foodItem)
@@ -288,25 +293,17 @@ class Window2(Screen): #Main List Window -- CHANGE NAME LATER
     def close_dialog(self, obj):
         self.dialog.dismiss()
 
-    def print_something(self, obj):
+    def add_to_list(self, obj):
         self.localList.append(self.foodItem.text)
         self.ids.container.add_widget(
             SwipeItem(text = self.foodItem.text)
         )
-        # if self.alreadyCheck == False:
-        #     # for i in self.localList: #prints all the items in user local list
-        #     #     self.ids.container.add_widget(
-        #     #         SwipeItem(text = i)
-        #     #     )
-        #     #     print(i)
-        # self.alreadyCheck = True;
 
 
 
 #DIALOG BOX
 class dialog_content(BoxLayout):
     quantity = ObjectProperty()
-
 
 
 #MAIN LIST CLASSES
@@ -372,6 +369,7 @@ class App(MDApp):
     
     def build(self):
         screen = Builder.load_file('test.kv')
+        print("hello world")
         return screen
 
 App().run()
