@@ -14,6 +14,7 @@ from kivymd.uix.picker import MDDatePicker
 from kivymd.uix.picker import MDThemePicker
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDRectangleFlatButton
+from kivymd.uix.button import MDFlatButton
 from kivy.lang import Builder
 from kivymd.app import MDApp
 from kivymd.theming import ThemableBehavior
@@ -39,10 +40,55 @@ Window.size = (400, 650)
 
 #SCREEN DEFINITIONS
 class Registration(Screen): # Registration Window
-    pass
+    def register(self, username, password, email):
+        query = f"INSERT INTO User VALUES('{username}', '{email}', PASSWORD('{password}'));"
+        DB = DBHandler()
+        if self.valid(username,DB):
+            DB.exec(query)
+
+    def valid(self, username, db):
+        users = db.exec(f"SELECT * FROM User WHERE username = '{username}'")
+        if len(users) > 0:
+            self.errorDialog()
+            return(False)
+        return(True)
+
+    def errorDialog(self):
+        self.dialog = MDDialog(
+            text = "ERROR: Username already registered"
+        )
+        self.dialog.open()
 
 class Login(Screen): # Login Window
-    pass
+    def login(self, username, password):
+        db = DBHandler()
+
+        if self.valid(username, password):
+            email = self.getEmail(username, db)
+            user = User(username, email, password)
+            App.user = user
+        else:
+            self.errorDialog()
+
+    def errorDialog(self):
+        self.dialog = MDDialog(
+            text = "ERROR: Invalid login information"
+        )
+        self.dialog.open()
+
+
+    def getEmail(self, username, db:DBHandler):
+        query = f"SELECT email FROM User where username = '{username}'"
+        email = db.exec(query)[0]
+        return(email)
+
+    def valid(self, username, password):
+        query = f"SELECT COUNT(*) FROM User WHERE username = '{username}' AND password = PASSWORD('{password}')"
+        DB = DBHandler()
+        count = DB.exec(query)
+        if count[0][0]:
+            return True
+        return(False)
 
 class Recipes(Screen): # Recipe Window
     pass
@@ -202,7 +248,58 @@ class Window2(Screen): #Main List Window -- CHANGE NAME LATER
         self.dialog.dismiss()
 
     def call_back(self,instance):#debug
-        print(instance.icon)
+        if (instance.icon == 'delete'):
+            self.deletion()
+        else:
+            self.show_data(self)
+
+    def deletion(self):
+        for delete in CheckedItemsList:
+            self.localList.remove(delete)
+        CheckedItemsList.clear()
+        print(*self.localList, sep='\n')
+
+    def show_data(self, obj):
+        close_button = MDRectangleFlatButton(
+            text = "Add",
+            pos_hint = {"center_x": 0.5, "center_y": 0.4},
+            on_press = self.close_dialog,
+            on_release = self.add_to_list
+        )
+        self.alreadyCheck = False
+
+        x_button = MDFlatButton(
+            text = "X",
+            pos_hint = {"center_x": 1.0, "center_y": 3.5},
+            on_press = self.close_dialog
+        )
+
+        self.foodItem = MDTextField(
+            hint_text = "Enter an item",
+            helper_text = "e.g. apples, bananas, orange, etc.",
+            helper_text_mode = "on_focus",
+            # icon_right_color = app.theme_cls.primary_color,
+            pos_hint = {"center_x": 0.5, "center_y": 0.5},
+            size_hint_x = None,
+            width = 250
+        )
+
+        self.dialog = MDDialog(
+            title = "Enter an item:",
+            size_hint = (0.7, 1),
+            buttons = [close_button, x_button]
+        )
+
+        self.dialog.add_widget(self.foodItem)
+
+        self.dialog.open()
+
+
+    def add_to_list(self, obj):
+        self.localList.append(self.foodItem.text)
+        self.ids.container.add_widget(
+            SwipeItem(text = self.foodItem.text)
+        )
 
 
 #DIALOG BOX
@@ -212,6 +309,10 @@ class dialog_content(BoxLayout):
 
 
 #MAIN LIST CLASSES
+
+# Contains a list of names of the checked items
+CheckedItemsList = []
+
 class SwipeItem(MDCardSwipe):
     '''' Card with behavior '''
     text = StringProperty()
@@ -223,6 +324,17 @@ class ListItemWithCheckbox(OneLineAvatarIconListItem):
 
 class RightCheckBox(IRightBodyTouch,MDCheckbox):
     '''' right container '''
+
+    def CheckedItems(self, food):
+        """
+        This will run whenever the Check Box is pushed, and will determine if the item is
+        already checked or not. If it is, the program will remove the item from the
+        CheckedItemsList. Otherwise, it will add it to the tail end of the list.
+        """
+        if food in CheckedItemsList:
+            CheckedItemsList.remove(food)
+        else:
+            CheckedItemsList.append(food)
 
 
 
