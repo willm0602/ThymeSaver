@@ -92,8 +92,7 @@ ScreenManager:
             halign: "center"
             pos: self.parent.pos
             on_release:
-                app.sm.get_screen("registration").register(user.text,password.text, email.text)
-                root.manager.current = 'window2'
+                root.manager.current = app.sm.get_screen("registration").register(user.text,password.text, email.text)
 
 <Login>:
     name:"login"
@@ -133,14 +132,13 @@ ScreenManager:
         #submit
         MDFillRoundFlatButton:
             id: "submit"
-            text: "Register"
+            text: "login"
             font_size: "30"
             color: (0, 0.5, 0)
             halign: "center"
             pos: self.parent.pos
             on_release:
-                app.sm.get_screen("login").login(user.text,password.text)
-                root.manager.current = 'window2'
+                root.manager.current = app.sm.get_screen("login").login(user.text,password.text)
 
 <Window1>:
     name: "window1"

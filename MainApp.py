@@ -45,6 +45,9 @@ class Registration(Screen): # Registration Window
         DB = DBHandler()
         if self.valid(username,DB):
             DB.exec(query)
+            return('window2')
+        self.errorDialog()
+        return('registration')
 
     def valid(self, username, db):
         users = db.exec(f"SELECT * FROM User WHERE username = '{username}'")
@@ -67,8 +70,10 @@ class Login(Screen): # Login Window
             email = self.getEmail(username, db)
             user = User(username, email, password)
             App.user = user
+            return('window2')
         else:
             self.errorDialog()
+            return('login')
 
     def errorDialog(self):
         self.dialog = MDDialog(
