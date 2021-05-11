@@ -52,18 +52,49 @@ ScreenManager:
 
 
 <Recipes>:
-    name:"recipes"
+    name: "recipes"
+    container: container
+         
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: "10dp"
 
-    MDLabel:
-        id: no_more_stink
-        pos_hint: {'center_x':0.85, 'center_y':0.6}
-        text: "Recipes Screen"
 
-    MDRectangleFlatButton:
-        text: "please, let me leave..."
-        pos_hint: {'center_x':0.5, 'center_y':0.5}
-        on_press: root.manager.current = 'window1'
-        on_press: root.manager.transition.duration = 0.25
+    ScrollView:
+        scroll_timeout: 100
+
+        MDList:
+            id: container
+            padding:0
+
+    
+    MDFloatingActionButtonSpeedDial: #floating list button
+        id:float_button
+        callback: self.parent.call_back
+        data: app.sm.get_screen("recipes").data
+        root_button_anim: True
+        #rotation_root_button : True #this breaks the whole thing
+        hint_animation: True
+
+    NavigationLayout:
+        ScreenManager:
+            Screen:
+                BoxLayout:
+                    orientation: 'vertical'
+
+                    MDToolbar:
+                        title: "Recipe List"
+                        elevation: 10
+                        left_action_items: [['menu', lambda x: nav_drawer.set_state()]]
+
+                    Widget:
+        
+        MDNavigationDrawer:
+            id: nav_drawer
+
+            ContentNavigationDrawer:
+                id: content_drawer
+
 
 
 <Registration>:
