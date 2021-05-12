@@ -38,6 +38,7 @@ ScreenManager:
                     orientation: 'vertical'
 
                     MDToolbar:
+                        md_bg_color: 0.5,0,0.75,1
                         title: "Pantry List"
                         elevation: 10
                         left_action_items: [['menu', lambda x: nav_drawer.set_state()]]
@@ -59,22 +60,12 @@ ScreenManager:
         orientation: "vertical"
         spacing: "10dp"
 
-
     ScrollView:
         scroll_timeout: 100
 
         MDList:
             id: container
             padding:0
-
-    
-    MDFloatingActionButtonSpeedDial: #floating list button
-        id:float_button
-        callback: self.parent.call_back
-        data: app.sm.get_screen("recipes").data
-        root_button_anim: True
-        #rotation_root_button : True #this breaks the whole thing
-        hint_animation: True
 
     NavigationLayout:
         ScreenManager:
@@ -83,6 +74,7 @@ ScreenManager:
                     orientation: 'vertical'
 
                     MDToolbar:
+                        md_bg_color: 0,0.75,0,1
                         title: "Recipe List"
                         elevation: 10
                         left_action_items: [['menu', lambda x: nav_drawer.set_state()]]
@@ -348,6 +340,7 @@ ScreenManager:
             icon: root.icon
             _no_ripple_effect: True
 
+        
         RightCheckBox:
             on_release: self.CheckedItems(root.text)
 
@@ -376,6 +369,31 @@ ScreenManager:
 
         RightCheckBox:
             on_release: self.CheckedItems(root.text)
+
+<SwipeItem_Recipe>:
+
+    size_hint_y: 1
+    height: content.height
+    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+    MDCardSwipeLayerBox:
+        padding: "8dp"
+
+        MDIconButton:
+            icon: "trash-can"
+            pos_hint: {"center_y": 0.5}
+            on_release: self.parent.parent.parent.parent.parent.remove_item(root)
+
+    MDCardSwipeFrontBox:
+        OneLineListItem:
+            id: content
+            text: root.text
+            icon: root.icon
+            _no_ripple_effect: True
+
+        MDRectangleFlatButton:
+            text: "open"
+            on_release: self.parent.parent.parent.parent.parent.show_recipe(root)
 
 
 
@@ -407,6 +425,22 @@ ScreenManager:
         #color_mode: 'custom'
         #line_color_focus: 0, 1, 0, 1
 
+
+
+<dialog_content_recipe>
+
+    orientation:"vertical"
+    spaceing: "12dp"
+    size_hint_y: None
+    height: "120dp"
+    
+    MDLabel:
+        text: "Here is some information"
+        valign: "top"
+        halign: "center"
+
+    MDLabel:
+        text: "Recipe text goes here and it's honestly some pretty long text. Wow look at it go!"
 
 
 <Check@MDCheckbox>:
