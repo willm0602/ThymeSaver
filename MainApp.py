@@ -92,6 +92,8 @@ class Login(Screen): # Login Window
 
 class Recipes(Screen): # Recipe Window
     #class variable definitions
+
+    #There's stuff in this class that need to be taken out cause they're not used
     data = {
         # 'database-plus': 'Add all checked to Pantry',
         'delete': 'Delete all checked recipes',
@@ -124,12 +126,13 @@ class Recipes(Screen): # Recipe Window
 
         #pull items owned by a user from the database
         RecipeItems = App.db.exec(f"SELECT name FROM Recipe;")
+        RecipeOtherThing = App.db.exec(f"SELECT * FROM Recipe;") #this will be used later
 
         #fill the list with them
         for item in RecipeItems:
             self.RecipeList.append(item[0])
 
-        print(RecipeItems)#debug
+        print(RecipeOtherThing[3][3])#debug
 
         if self.alreadyCheckNav == False: #If the navbar is already full, don't fill it again
             for icon_name in icons_item.keys():
@@ -141,7 +144,7 @@ class Recipes(Screen): # Recipe Window
         if self.alreadyCheck == False:
             for i in self.RecipeList: #prints all the items in user local list
                 self.ids.container.add_widget(
-                    SwipeItem_Pantry(text = i)
+                    SwipeItem_Recipe(text = i)
                 )
             self.alreadyCheck = True
 
@@ -186,7 +189,7 @@ class Recipes(Screen): # Recipe Window
         date_dialog = MDDatePicker(callback=self.got_date)
         date_dialog.open()
 
-    def add_pantry_item(self,instance):#Opens dialog box and prompts for additional information needed for the add to pantry functionality
+    def show_recipe(self,instance):#Opens dialog box and prompts for additional information needed for the add to pantry functionality
         
         self.bufferDate = None #reset bufferdate back to null when dialog box opens
         self.food_name = instance.text #this gets the title of the item clicked
@@ -194,13 +197,12 @@ class Recipes(Screen): # Recipe Window
 
         #So looks like variables need to use self. to be able to use elsewhere
         close_button = MDRectangleFlatButton(text = 'Close', on_release=self.close_dialog)
-        submit_button = MDRectangleFlatButton(text = 'Submit', on_release=self.submit_dialog)
         self.dialog = MDDialog(
-            title = "Add item to Pantry?",
+            title = "Recipe Info",
             size_hint=(0.8,1),
             type="custom",
-            content_cls = dialog_content(),
-            buttons=[submit_button,close_button],
+            content_cls = dialog_content_recipe(),
+            buttons=[close_button],
         )
         self.dialog.open()
         # open thingy that prompts for more info and then creates a food object which is then sent to the food handler
@@ -294,6 +296,8 @@ class Recipes(Screen): # Recipe Window
 
 class Pantry(Screen): # Pantry Screen
     #class variable definitions
+
+    #There's stuff in this class that need to be taken out cause they're not used
     data = {
         # 'database-plus': 'Add all checked to Pantry',
         'delete': 'Delete all checked from Pantry',
@@ -713,6 +717,8 @@ class Window2(Screen): #Main List Window -- CHANGE NAME LATER
 class dialog_content(BoxLayout):
     quantity = ObjectProperty()
 
+class dialog_content_recipe(BoxLayout):
+    pass
 
 
 #MAIN LIST CLASSES
@@ -720,13 +726,21 @@ class dialog_content(BoxLayout):
 # Contains a list of names of the checked items
 CheckedItemsList = []
 
+#Item boxes for the standard list
 class SwipeItem(MDCardSwipe):
     '''' Card with behavior '''
     text = StringProperty()
     icon = StringProperty('android')
 
-
+#Item boxes for the Pantry list
 class SwipeItem_Pantry(MDCardSwipe):
+    '''' Card with behavior '''
+    text = StringProperty()
+    icon = StringProperty('android')
+
+
+#Item boxes for the recipe list
+class SwipeItem_Recipe(MDCardSwipe): 
     '''' Card with behavior '''
     text = StringProperty()
     icon = StringProperty('android')
