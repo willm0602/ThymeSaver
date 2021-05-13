@@ -2,7 +2,6 @@
 from Food import Food
 from User import User
 from DBHandler import DBHandler
-from MainAppScreen import KV #file for screen display
 
 #Imports from the kivy library
 from kivy.uix.screenmanager import (ScreenManager, Screen, NoTransition,

@@ -1,5 +1,8 @@
-from random import randint
+'''
+Describes a recipe
+'''
 
+from random import randint
 
 class Recipe:
     def __init__(self, *inp):
@@ -24,6 +27,8 @@ class Recipe:
         self.name = name
         # Works as intended, will change the name to passed value
 
+
+    #Getters and setters
     def getName(self):
         return self.name
         # Works as intended, returns name within class

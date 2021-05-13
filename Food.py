@@ -1,6 +1,20 @@
+'''
+Class to describe foods
+'''
+
 import datetime
 
 class Food:
+    '''
+    Constructor
+    @inKey the surrogate key for the food
+    @owner the owner of the food
+    @name the name of the food
+    @expired bool for if the food has expired
+    @expDate when the food expires
+    @quantity how much of the food there is
+    @type how the food is inputed
+    '''
     def __init__(self, inKey, inOwner, inName, inExpired, inExpDate, inQuantity, inType):
         self.surrogateKey = inKey
         self.owner = inOwner
@@ -11,6 +25,7 @@ class Food:
         self.type = inType
 
 
+    #Getters and setters
     def setSurrogate(self, inKey):
         self.surrogateKey = inKey
 
@@ -46,20 +61,3 @@ class Food:
 
     def getExpDate(self):
         return self.expDate
-
-
-    
-
-
-# Create an object of type Food (with initialization values)
-myFood = Food(1, "PIZZA", "Katie", True, datetime.datetime(2021, 3, 29), 10, "produce")
-
-
-print(myFood.surrogateKey)
-
-print("***************")
-
-print(myFood.getSurrogate())
-
-
-

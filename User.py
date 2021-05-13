@@ -1,3 +1,5 @@
+#defines a simple user
+
 class User:
     def __init__(self, username, email, password):
         self.username = username
