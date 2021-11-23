@@ -1,0 +1,449 @@
+ScreenManager:
+    Window1:
+    Window2:
+    Login:
+    Registration:
+    Recipes:
+    Pantry:
+
+<Pantry>:
+    name: "pantry"
+    container: container
+         
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: "10dp"
+
+
+    ScrollView:
+        scroll_timeout: 100
+
+        MDList:
+            id: container
+            padding:0
+
+    
+    MDFloatingActionButtonSpeedDial: #floating list button
+        id:float_button
+        callback: self.parent.call_back
+        data: app.sm.get_screen("pantry").data
+        root_button_anim: True
+        #rotation_root_button : True #this breaks the whole thing
+        hint_animation: True
+
+    NavigationLayout:
+        ScreenManager:
+            Screen:
+                BoxLayout:
+                    orientation: 'vertical'
+
+                    MDToolbar:
+                        md_bg_color: 0.5,0.25,0.66,1
+                        title: "Pantry List"
+                        elevation: 10
+                        left_action_items: [['menu', lambda x: nav_drawer.set_state()]]
+
+                    Widget:
+        
+        MDNavigationDrawer:
+            id: nav_drawer
+
+            ContentNavigationDrawer:
+                id: content_drawer
+
+
+<Recipes>:
+    name: "recipes"
+    container: container
+         
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: "10dp"
+
+    ScrollView:
+        scroll_timeout: 100
+
+        MDList:
+            id: container
+            padding:0
+
+    NavigationLayout:
+        ScreenManager:
+            Screen:
+                BoxLayout:
+                    orientation: 'vertical'
+
+                    MDToolbar:
+                        md_bg_color: 0.25, .65, .38, 1
+                        title: "Recipe List"
+                        elevation: 10
+                        left_action_items: [['menu', lambda x: nav_drawer.set_state()]]
+
+                    Widget:
+        
+        MDNavigationDrawer:
+            id: nav_drawer
+
+            ContentNavigationDrawer:
+                id: content_drawer
+
+
+
+<Registration>:
+    name:"registration"
+    MDBoxLayout:
+        orientation: "vertical"
+        MDLabel:
+            text: "Register"
+            halign: "center"
+            theme_text_color: "Custom"
+            text_color: 0, 0.5, 0, 1
+
+        #username
+        MDTextField:
+            hint_text: "Username"
+            id: user
+            halign: "center"
+            valign: "middle"
+            color_mode: "primary"
+            mode: "rectangle"
+            hint_text_color: "black"
+            theme_text_color: "Custom"
+            text_color: 0, 0.5, 0, 1  
+
+        #password
+        MDTextField: 
+            hint_text: "Password"
+            id: password
+            halign: "center"
+            valign: "middle"
+            color_mode: "primary"
+            mode: "rectangle"
+            hint_text_color: "black"
+            theme_text_color: "Custom"
+            text_color: 0, 0.5, 0, 1 
+            password: True
+
+        #email   
+        MDTextField: 
+            hint_text: "Email"
+            id: email
+            halign: "center"
+            valign: "middle"
+            color_mode: "primary"
+            mode: "rectangle"
+            hint_text_color: "black"
+            theme_text_color: "Custom"
+            text_color: 0, 0.5, 0, 1 
+
+        #submit
+        MDFillRoundFlatButton:
+            id: "submit"
+            text: "Register"
+            font_size: "30"
+            color: (0, 0.5, 0)
+            halign: "center"
+            pos: self.parent.pos
+            on_release:
+                app.sm.get_screen("registration").register(user.text,password.text, email.text)
+                root.manager.current = 'window2'
+
+<Login>:
+    name:"login"
+    MDBoxLayout:
+        orientation: "vertical"
+        MDLabel:
+            text: "Login"
+            halign: "center"
+            theme_text_color: "Custom"
+            text_color: 0, 0.5, 0, 1
+
+        #username
+        MDTextField:
+            hint_text: "Username"
+            id: user
+            halign: "center"
+            valign: "middle"
+            color_mode: "primary"
+            mode: "rectangle"
+            hint_text_color: "black"
+            theme_text_color: "Custom"
+            text_color: 0, 0.5, 0, 1  
+
+        #password
+        MDTextField: 
+            hint_text: "Password"
+            id: password
+            halign: "center"
+            valign: "middle"
+            color_mode: "primary"
+            mode: "rectangle"
+            hint_text_color: "black"
+            theme_text_color: "Custom"
+            text_color: 0, 0.5, 0, 1 
+            password: True 
+
+        #submit
+        MDFillRoundFlatButton:
+            id: "submit"
+            text: "Register"
+            font_size: "30"
+            color: (0, 0.5, 0)
+            halign: "center"
+            pos: self.parent.pos
+            on_release:
+                app.sm.get_screen("login").login(user.text,password.text)
+                root.manager.current = 'window2'
+
+<Window1>:
+    name: "window1"
+    test: no_more_stink
+
+    MDLabel:
+        id: no_more_stink
+        pos_hint: {'center_x':0.85, 'center_y':0.6}
+        text: "Welcome Window"
+
+    MDRectangleFlatButton:
+        text: "Login!"
+        pos_hint: {'center_x':0.5, 'center_y':0.5}
+        on_press: root.manager.current = 'login'
+
+    MDRectangleFlatButton:
+        text: "Register"
+        pos_hint: {'center_x':0.5, 'center_y':0.4}
+        on_press: root.manager.current = 'registration'
+
+    MDRectangleFlatButton:
+        text: "No Thanks"
+        pos_hint: {'center_x':0.5, 'center_y':0.3}
+        on_press: root.manager.current = 'window2'
+
+<Window2>:
+    name: "window2"
+    container: container
+         
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: "10dp"
+
+
+    ScrollView:
+        scroll_timeout: 100
+
+        MDList:
+            id: container
+            padding:0
+
+    
+    MDFloatingActionButtonSpeedDial: #floating list button
+        id:float_button
+        callback: self.parent.call_back
+        data: app.sm.get_screen("window2").data
+        root_button_anim: True
+        #rotation_root_button : True #this breaks the whole thing
+        hint_animation: True
+
+    NavigationLayout:
+        ScreenManager:
+            Screen:
+                BoxLayout:
+                    orientation: 'vertical'
+
+                    MDToolbar:
+                        title: "Grocery List"
+                        elevation: 10
+                        left_action_items: [['menu', lambda x: nav_drawer.set_state()]]
+
+                    Widget:
+        
+        MDNavigationDrawer:
+            id: nav_drawer
+
+            ContentNavigationDrawer:
+                id: content_drawer
+
+
+<ItemDrawer>:
+    theme_text_color: "Custom"
+    on_press: self.parent.parent.set_state("close")
+    on_press: self.parent.parent.parent.parent.parent.current = "window1" #this is ugly but it works
+
+    IconLeftWidget:
+        id: icon
+        icon: root.icon
+        theme_text_color: "Custom"
+        text_color: root.text_color
+
+
+<ContentNavigationDrawer>: #All of the info in the nav drawer
+    orientation: "vertical"
+    padding: "8dp"
+    spacing: "8dp"
+
+    AnchorLayout:
+        anchor_x: "left"
+        anchor_y: "top"
+        size_hint_y: None
+        height: avatar.height
+
+        Image: #User image, not necessary but could be cool. Current Captain Wheeze
+            id: avatar
+            size_hint: None, None
+            size: "56dp", "56dp"
+            source: "CaptainWheezeopp.png"
+
+    MDLabel: # This will eventually be the username of the user
+        text: app.user.username
+        font_style: "Button"
+        size_hint_y: None
+        height: self.texture_size[1]
+
+    MDLabel: # and this will be the users email
+        text: app.user.email
+        font_style: "Caption"
+        size_hint_y: None
+        height: self.texture_size[1]
+
+    ScrollView: #This is the nav list in the navbar, probably doesn't need a scrollview
+    
+    DrawerList:
+        id: md_list
+
+
+
+
+<SwipeItem>:
+
+    size_hint_y: 1
+    height: content.height
+    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+    MDCardSwipeLayerBox:
+        padding: "8dp"
+
+        MDIconButton:
+            icon: "trash-can"
+            pos_hint: {"center_y": 0.5}
+            on_release: self.parent.parent.parent.parent.parent.remove_item(root)
+
+        MDIconButton:
+            icon: "database-plus"
+            pos_hint: {"center_y": 0.5}
+            on_release: self.parent.parent.parent.parent.parent.add_pantry_item(root)
+            
+
+    MDCardSwipeFrontBox:
+        OneLineListItem:
+            id: content
+            text: root.text
+            icon: root.icon
+            _no_ripple_effect: True
+
+        
+        RightCheckBox:
+            on_release: self.CheckedItems(root.text)
+
+
+
+<SwipeItem_Pantry>:
+
+    size_hint_y: 1
+    height: content.height
+    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+    MDCardSwipeLayerBox:
+        padding: "8dp"
+
+        MDIconButton:
+            icon: "trash-can"
+            pos_hint: {"center_y": 0.5}
+            on_release: self.parent.parent.parent.parent.parent.remove_item(root)
+
+    MDCardSwipeFrontBox:
+        OneLineListItem:
+            id: content
+            text: root.text
+            icon: root.icon
+            _no_ripple_effect: True
+
+        RightCheckBox:
+            on_release: self.CheckedItems(root.text)
+
+<SwipeItem_Recipe>:
+
+    size_hint_y: 1
+    height: content.height
+    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+    MDCardSwipeLayerBox:
+        padding: "8dp"
+
+        MDIconButton:
+            icon: "trash-can"
+            pos_hint: {"center_y": 0.5}
+            on_release: self.parent.parent.parent.parent.parent.remove_item(root)
+
+    MDCardSwipeFrontBox:
+        OneLineListItem:
+            id: content
+            text: root.text
+            icon: root.icon
+            _no_ripple_effect: True
+
+        MDRectangleFlatButton:
+            text: "open"
+            on_release: self.parent.parent.parent.parent.parent.show_recipe(root)
+
+
+
+<dialog_content>
+    
+    quantity:quantity
+
+    orientation:"vertical"
+    spaceing: "12dp"
+    size_hint_y: None
+    height: "120dp"
+    
+    MDLabel:
+        text: "Does this item expire?"
+        valign: "top"
+
+    MDRaisedButton:
+        text: "Select an expiration date"
+        pos_hint: {'center_x': .5, 'center_y': .5}
+        on_release: app.sm.get_screen("window2").show_date_picker()
+    
+    MDTextField:
+        id: quantity
+        input_filter: 'int'
+        hint_text: "Quantity"
+        helper_text: "Default:1"
+        helper_text_mode: "persistent"
+        
+        #color_mode: 'custom'
+        #line_color_focus: 0, 1, 0, 1
+
+
+
+<dialog_content_recipe>
+
+    orientation:"vertical"
+    spaceing: "12dp"
+    size_hint_y: None
+    height: "120dp"
+    
+    MDLabel:
+        text: "Here is some information"
+        valign: "top"
+        halign: "center"
+
+    MDLabel:
+        text: "Recipe text goes here and it's honestly some pretty long text. Wow look at it go!"
+
+
+<Check@MDCheckbox>:
+    group: 'group'
+    size_hint: None, None
+    size: dp(48), dp(48) #48
