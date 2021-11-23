@@ -38,6 +38,33 @@ ScreenManager:
 
 <Registration>:
     name:"registration"
+
+
+    MDLabel:
+        id: no_more_stink
+        pos_hint: {'center_x':0.85, 'center_y':0.6}
+        text: "Registration Screen"
+
+    MDRectangleFlatButton:
+        text: "please, let me leave..."
+        pos_hint: {'center_x':0.5, 'center_y':0.5}
+        on_press: root.manager.current = 'window1'
+        on_press: root.manager.transition.duration = 0.25
+
+<Login>:
+    name:"login"
+
+    MDLabel:
+        id: no_more_stink
+        pos_hint: {'center_x':0.85, 'center_y':0.6}
+        text: "Login Screen"
+
+    MDRectangleFlatButton:
+        text: "please, let me leave..."
+        pos_hint: {'center_x':0.5, 'center_y':0.5}
+        on_press: root.manager.current = 'window1'
+        on_press: root.manager.transition.duration = 0.25
+
     MDBoxLayout:
         orientation: "vertical"
         MDLabel:
@@ -139,6 +166,7 @@ ScreenManager:
             pos: self.parent.pos
             on_release:
                 root.manager.current = app.sm.get_screen("login").login(user.text,password.text)
+
 
 <Window1>:
     name: "window1"
@@ -287,6 +315,7 @@ ScreenManager:
 
         RightCheckBox:
             on_release: self.CheckedItems(root.text)
+
 
 
 
